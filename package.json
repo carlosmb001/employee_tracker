@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "inquirer": "^8.2.4",
     "nodemon": "^2.0.3"
   },
   "dependencies": {
