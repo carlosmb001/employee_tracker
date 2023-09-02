@@ -10,12 +10,12 @@ const db = mysql.createConnection(
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME
-  },
-  connection.connect(err => {
+  });
+
+  db.connect(err => {
   console.log(`Connected to the employee_db database.`);
   startProgram();
-  });
-);
+});
 
 const promptUser = () => {
   inquirer.prompt([
@@ -23,6 +23,7 @@ const promptUser = () => {
     name: 'choices',
     message: 'What would you like to do?',
     choices: [
+      'View All Data',
       'View All Departments',
       'View All Roles',
       'View All Employees',
@@ -40,6 +41,9 @@ const promptUser = () => {
     ]}
   ]).then (answers => {
     const {choices} = answers;
+    if (choices === 'View All Data') {
+      viewAllData();
+    }
     if (choices === 'View All Departments') {
       viewAllDepartments();
     }
@@ -79,13 +83,15 @@ const promptUser = () => {
     if (choices === 'Delete an Employee') {
       deleteEmployee();
     }
-    else Connection.end();
+    if (choices === 'Exit') {
+      db.end();
+    }
   });
 };
 
+// begins program and prompts user
 startProgram = () => {
   promptUser();
-  viewAllData();
 }
 
 viewAllData = () => {
@@ -105,3 +111,68 @@ db.query(sql, (err, result) => {
 
 
 
+viewAllDepartments = () => {
+  const sql = `SELECT * FROM department`;
+
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.table(result);
+    promptUser();
+  });
+}
+
+viewAllRoles = () => {
+  const sql = `
+  SELECT * FROM department
+  INNER JOIN role ON department.id = role.department_id`;
+
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.table(result);
+    promptUser();
+});
+}
+
+viewAllEmployees = () => {
+  const sql = `
+  SELECT * FROM department
+  INNER JOIN role ON department.id = role.department_id
+  INNER JOIN employee ON role.id = employee.role_id`;
+
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.table(result);
+    promptUser();
+});
+}
+
+addDepartment = () => {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'newDepartment',
+      message: 'What is the name of the department?'
+    }
+
+  ]).then(answer => {
+  const sql = `INSERT INTO department (name) `;
+
+  db.query(sql, answer.newDepartment, (err, result) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.table(result);
+    promptUser();
+});
+});
+}
