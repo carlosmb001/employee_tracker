@@ -178,3 +178,257 @@ addDepartment = () => {
 });
 });
 }
+
+addRole = () => {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'newRole',
+      message: 'What is the name of the role?'
+    },
+    {
+      type: 'input',
+      name: 'newSalary',
+      message: 'What is the salary of the role?'
+    },
+    {
+      type: 'input',
+      name: 'newDptId',
+      message: 'What is the department id of the role?'
+    }
+
+  ]).then(answer => {
+  const sql = `
+  INSERT INTO role (title, salary, department_id)
+  VALUES (?, ?, ?)`;
+
+  db.query(sql, [answer.newRole, answer.newSalary, answer.newDptId], (err, result) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Role ${answer.newRole} added successfully!`);
+    promptUser();
+});
+});
+}
+
+addEmployee = () => {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'newFirstName',
+      message: 'What is the first name of the employee?'
+    },
+    {
+      type: 'input',
+      name: 'newLastName',
+      message: 'What is the last name of the employee?'
+    },
+    {
+      type: 'input',
+      name: 'newRoleId',
+      message: 'What is the role id of the employee?'
+    },
+    {
+      type: 'input',
+      name: 'newManagerId',
+      message: 'What is the manager id of the employee?'
+    }
+
+  ]).then(answer => {
+  const sql = `
+  INSERT INTO employee (first_name, last_name, role_id, manager_id)
+  VALUES (?, ?, ?, ?)`;
+
+  db.query(sql, [answer.newFirstName, answer.newLastName, answer.newRoleId, answer.newManagerId], (err, result) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Employee ${answer.newFirstName} ${answer.newLastName} added successfully!`);
+    promptUser();
+});
+});
+}
+
+updateEmployeeRole = () => {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'employeeId',
+      message: 'What is the id of the employee?'
+    },
+    {
+      type: 'input',
+      name: 'newRoleId',
+      message: 'What is the new role id of the employee?'
+    }
+
+  ]).then(answer => {
+  const sql = `
+  UPDATE employee SET role_id = ?
+  WHERE id = ?`;
+
+  db.query(sql, [answer.newRoleId, answer.employeeId], (err, result) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Employee ${answer.employeeId} role updated successfully!`);
+    promptUser();
+});
+});
+}
+
+updateEmployeeManager = () => {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'employeeId',
+      message: 'What is the id of the employee?'
+    },
+    {
+      type: 'input',
+      name: 'newManagerId',
+      message: 'What is the new manager id of the employee?'
+    }
+
+  ]).then(answer => {
+  const sql = `
+  UPDATE employee SET manager_id = ?
+  WHERE id = ?`;
+
+  db.query(sql, [answer.newManagerId, answer.employeeId], (err, result) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Employee ${answer.employeeId} manager updated successfully!`);
+    promptUser();
+});
+});
+}
+
+viewEmployeesByManager = () => {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'managerId',
+      message: 'What is the id of the manager?'
+    }
+
+  ]).then(answer => {
+  const sql = `
+  SELECT * FROM employee
+  WHERE manager_id = ?`;
+
+  db.query(sql, answer.managerId, (err, result) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.table(result);
+    promptUser();
+});
+});
+}
+
+viewEmployeesByDepartment = () => {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'departmentId',
+      message: 'What is the id of the department?'
+    }
+
+  ]).then(answer => {
+  const sql = `
+  SELECT * FROM department
+  INNER JOIN role ON department.id = role.department_id
+  INNER JOIN employee ON role.id = employee.role_id
+  WHERE department.id = ?`;
+
+  db.query(sql, answer.departmentId, (err, result) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.table(result);
+    promptUser();
+});
+});
+}
+
+deleteDepartment = () => {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'departmentId',
+      message: 'What is the id of the department?'
+    }
+
+  ]).then(answer => {
+  const sql = `
+  DELETE FROM department
+  WHERE id = ?`;
+
+  db.query(sql, answer.departmentId, (err, result) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Department ${answer.departmentId} deleted successfully!`);
+    promptUser();
+});
+});
+}
+
+deleteRole = () => {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'roleId',
+      message: 'What is the id of the role?'
+    }
+
+  ]).then(answer => {
+  const sql = `
+  DELETE FROM role
+  WHERE id = ?`;
+
+  db.query(sql, answer.roleId, (err, result) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Role ${answer.roleId} deleted successfully!`);
+    promptUser();
+});
+});
+}
+
+deleteEmployee = () => {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'employeeId',
+      message: 'What is the id of the employee?'
+    }
+
+  ]).then(answer => {
+  const sql = `
+  DELETE FROM employee
+  WHERE id = ?`;
+
+  db.query(sql, answer.employeeId, (err, result) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Employee ${answer.employeeId} deleted successfully!`);
+    promptUser();
+});
+});
+}
+
