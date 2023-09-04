@@ -159,19 +159,21 @@ addDepartment = () => {
   inquirer.prompt([
     {
       type: 'input',
-      name: 'newDepartment',
+      name: 'newDpt',
       message: 'What is the name of the department?'
     }
 
   ]).then(answer => {
-  const sql = `INSERT INTO department (name) `;
+  const sql = `
+  INSERT INTO department (name)
+  VALUES (?)`;
 
-  db.query(sql, answer.newDepartment, (err, result) => {
+  db.query(sql, answer.newDpt, (err, result) => {
     if (err) {
       console.log(err);
       return;
     }
-    console.table(result);
+    console.log(`Department ${answer.newDpt} added successfully!`);
     promptUser();
 });
 });
