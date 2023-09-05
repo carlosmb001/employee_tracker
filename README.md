@@ -49,7 +49,7 @@ View employees by department
 Delete departments, roles, and employees
 
 ## 📦 Packages Used
-[Inquirer v8.2.4](https://www.npmjs.com/package/inquirer/v/8.2.4)
+[Inquirer v8.2.4](https://www.npmjs.com/package/inquirer/v/8.2.4)<br>
 [MySQL2](https://www.npmjs.com/package/mysql2)
 
 ## 🤝 Contribution
