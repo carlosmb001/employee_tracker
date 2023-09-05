@@ -34,18 +34,17 @@ npm install
 node index.js
 ```
 ## 📋 Usage
-The application provides the following options:
-
-View all departments
-View all roles
-View all employees
-Add a department
-Add a role
-Add an employee
-Update an employee role
-Update employee managers
-View employees by manager
-View employees by department
+The application provides the following options:<br>
+View all departments<br>
+View all roles<br>
+View all employees<br>
+Add a department<br>
+Add a role<br>
+Add an employee<br>
+Update an employee role<br>
+Update employee managers<br>
+View employees by manager<br>
+View employees by department<br>
 Delete departments, roles, and employees
 
 ## 📦 Packages Used
