@@ -94,6 +94,7 @@ startProgram = () => {
   promptUser();
 }
 
+//view all data
 viewAllData = () => {
 const sql = `
 SELECT * FROM department
@@ -106,11 +107,12 @@ db.query(sql, (err, result) => {
     return;
   }
   console.table(result);
+  startProgram();
 });
 }
 
 
-
+//view all departments
 viewAllDepartments = () => {
   const sql = `SELECT * FROM department`;
 
@@ -124,6 +126,7 @@ viewAllDepartments = () => {
   });
 }
 
+//view all roles
 viewAllRoles = () => {
   const sql = `
   SELECT * FROM department
@@ -139,6 +142,7 @@ viewAllRoles = () => {
 });
 }
 
+//view all employees
 viewAllEmployees = () => {
   const sql = `
   SELECT * FROM department
@@ -155,6 +159,7 @@ viewAllEmployees = () => {
 });
 }
 
+//adds a department to data base
 addDepartment = () => {
   inquirer.prompt([
     {
@@ -179,6 +184,7 @@ addDepartment = () => {
 });
 }
 
+//adds a role to data base
 addRole = () => {
   inquirer.prompt([
     {
@@ -213,6 +219,7 @@ addRole = () => {
 });
 }
 
+//adds an employee to data base
 addEmployee = () => {
   inquirer.prompt([
     {
@@ -252,6 +259,7 @@ addEmployee = () => {
 });
 }
 
+//updates an employee role
 updateEmployeeRole = () => {
   inquirer.prompt([
     {
@@ -281,6 +289,7 @@ updateEmployeeRole = () => {
 });
 }
 
+//updates an employee manager
 updateEmployeeManager = () => {
   inquirer.prompt([
     {
@@ -310,6 +319,7 @@ updateEmployeeManager = () => {
 });
 }
 
+//view employees by manager
 viewEmployeesByManager = () => {
   inquirer.prompt([
     {
@@ -334,6 +344,7 @@ viewEmployeesByManager = () => {
 });
 }
 
+//view employees by department
 viewEmployeesByDepartment = () => {
   inquirer.prompt([
     {
@@ -360,7 +371,7 @@ viewEmployeesByDepartment = () => {
 });
 }
 
-deleteDepartment = () => {
+/*deleteDepartment = () => {
   inquirer.prompt([
     {
       type: 'input',
@@ -407,7 +418,8 @@ deleteRole = () => {
 });
 });
 }
-
+*/
+//deletes an employee from data base
 deleteEmployee = () => {
   inquirer.prompt([
     {
